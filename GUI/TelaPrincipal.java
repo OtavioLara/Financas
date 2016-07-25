@@ -5,20 +5,13 @@
  */
 package financasgenerica.GUI;
 
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 /**
@@ -34,7 +27,8 @@ public class TelaPrincipal extends TelaLogado {
     private JLabel lblValorDivida;
     private JLabel lblValorAReceber;
 
-    private JButton btnCadastrarDespesa;
+    private JButton btnCadastrarDespesaGrupo;
+    private JButton btnCadastrarDespesaIndividual;
     private JButton btnContasPendentes;
     private JButton btnHistorico;
     private JButton btnGrupos;
@@ -55,7 +49,16 @@ public class TelaPrincipal extends TelaLogado {
 
         lblValorAReceber = new JLabel("R$ 0,00");
 
-        btnCadastrarDespesa = new JButton("Cadastrar despesa");
+        btnCadastrarDespesaGrupo = new JButton("Cadastro despesa grupo");
+        btnCadastrarDespesaIndividual = new JButton("Cadastro despesa individual");
+        btnCadastrarDespesaIndividual.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TelaDespesaIndividual tl = new TelaDespesaIndividual();
+                tl.setVisible(true);
+                dispose();
+            }
+        });
         btnContasPendentes = new JButton("Contas pendentes");
         btnHistorico = new JButton("Histórico de despesas");
         btnGrupos = new JButton("Administrar grupos");
@@ -79,7 +82,8 @@ public class TelaPrincipal extends TelaLogado {
 
         JPanel painelBotoes = new JPanel();
         painelBotoes.setLayout(new FlowLayout());
-        painelBotoes.add(btnCadastrarDespesa);
+        painelBotoes.add(btnCadastrarDespesaGrupo);
+        painelBotoes.add(btnCadastrarDespesaIndividual);
         painelBotoes.add(btnContasPendentes);
         painelBotoes.add(btnHistorico);
         painelBotoes.add(btnGrupos);

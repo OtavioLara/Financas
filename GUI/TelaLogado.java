@@ -45,7 +45,7 @@ public abstract class TelaLogado extends JFrame {
         gbc = new GridBagConstraints();
 
         setLayout(gbl);
-        setResizable(true);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         construirTela();
     }

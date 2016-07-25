@@ -14,10 +14,10 @@ import java.util.Date;
  */
 public class DespesaIndividual extends Despesa {
 
-    private final Usuario usuario;
+    private String usuario;
     private ArrayList<ItemDespesaIndividual> itens;
 
-    public DespesaIndividual(String nome, double valor, String descricao, Date data, Usuario usuario, ArrayList<ItemDespesaIndividual> itens) {
+    public DespesaIndividual(String nome, double valor, String descricao, Date data, String usuario, ArrayList<ItemDespesaIndividual> itens) {
         super(nome, valor, data, descricao);
         this.usuario = usuario;
         this.itens = itens;
@@ -27,11 +27,25 @@ public class DespesaIndividual extends Despesa {
      * @deprecated
      */
     public void addItem(String nome, double valor) {
-        itens.add(new ItemDespesaIndividual(nome, valor));
+        getItens().add(new ItemDespesaIndividual(nome, valor));
     }
 
     @Override
     public boolean isParticipante(Pessoa pessoa) {
-        return usuario.equals((Usuario)pessoa);
+        return getUsuario().equals((Usuario)pessoa);
+    }
+
+    /**
+     * @return the usuario
+     */
+    public String getUsuario() {
+        return usuario;
+    }
+
+    /**
+     * @return the itens
+     */
+    public ArrayList<ItemDespesaIndividual> getItens() {
+        return itens;
     }
 }

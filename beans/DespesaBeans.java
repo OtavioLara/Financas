@@ -3,34 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package financasgenerica;
+package financasgenerica.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author Otavio
  */
-public abstract class Despesa {
+public class DespesaBeans implements Serializable{
+
     private double valor;
     private String nome;
     private String descricao;
     private Date data;
-    
-    public Despesa(String nome, double valor, Date data, String descricao){
-        this(nome, valor, data);
-        this.descricao = descricao;
-    }
-    public Despesa(String nome, double valor, Date data){
-        this.nome = nome;
-        this.valor = valor;
-        this.data = data;
-    }
+
     /**
      * @return the valor
      */
     public double getValor() {
         return valor;
+    }
+
+    /**
+     * @param valor the valor to set
+     */
+    public void setValor(double valor) {
+        this.valor = valor;
     }
 
     /**
@@ -41,10 +41,24 @@ public abstract class Despesa {
     }
 
     /**
+     * @param nome the nome to set
+     */
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    /**
      * @return the descricao
      */
     public String getDescricao() {
         return descricao;
+    }
+
+    /**
+     * @param descricao the descricao to set
+     */
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     /**
@@ -54,6 +68,11 @@ public abstract class Despesa {
         return data;
     }
 
-    public abstract boolean isParticipante(Pessoa pessoa);
-    
+    /**
+     * @param data the data to set
+     */
+    public void setData(Date data) {
+        this.data = data;
+    }
+
 }

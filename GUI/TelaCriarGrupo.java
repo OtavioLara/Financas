@@ -11,7 +11,6 @@ import financasgenerica.controler.ControlerGrupo;
 import financasgenerica.controler.ControlerUsuario;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -40,7 +39,8 @@ public class TelaCriarGrupo extends TelaLogado {
 
     private JButton btnMaisItegrantes;
     private JButton btnCriarGrupo;
-
+    private JButton btnCancelar;
+    
     private ArrayList<Usuario> listaUsuarios;
 
     public TelaCriarGrupo() {
@@ -96,15 +96,30 @@ public class TelaCriarGrupo extends TelaLogado {
                     dispose();
                 }
             }
+        });    
+        btnCancelar = new JButton("Cancelar");
+        btnCancelar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
         });
-        JPanel painelNovoGrupo = new JPanel(getLogadoLayout());
-        adicionarComponente(painelNovoGrupo, lblNomeGrupo, 0, 0, 1, GridBagConstraints.LINE_START);
-        adicionarComponente(painelNovoGrupo, txtNomeGrupo, 0, 1, 2, GridBagConstraints.LINE_START);
-        adicionarComponente(painelNovoGrupo, listScroller, 1, 0, 3, GridBagConstraints.LINE_START, new Insets(5, 5, 5, 5));
-        adicionarComponente(painelNovoGrupo, btnMaisItegrantes, 2, 0, 2, GridBagConstraints.LINE_END);
-        adicionarComponente(painelNovoGrupo, btnCriarGrupo, 3, 0, 3, GridBagConstraints.BOTH);
+        JPanel painelIntegrantes = new JPanel(getLogadoLayout());
+        adicionarComponente(painelIntegrantes, listScroller, 0, 0, 3, GridBagConstraints.LINE_START);
+        adicionarComponente(painelIntegrantes, btnMaisItegrantes, 1, 0, 2, GridBagConstraints.LINE_END);
+        painelIntegrantes.setBorder(javax.swing.BorderFactory.createTitledBorder("Integrantes"));
+        
+        JPanel painelBotoes = new JPanel(getLogadoLayout());
+        adicionarComponente(painelBotoes, btnCriarGrupo, 0, 0, 2, GridBagConstraints.BOTH);
+        adicionarComponente(painelBotoes, btnCancelar, 0, 2, 1, GridBagConstraints.BOTH);
+        
 
-        adicionarComponente(painelNovoGrupo, 0, 0, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
+        adicionarComponente(lblNomeGrupo, 0, 0, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
+        adicionarComponente(txtNomeGrupo, 0, 1, 2, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
+        adicionarComponente(painelIntegrantes, 1, 0, 3, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
+        adicionarComponente(painelBotoes, 2, 0, 3, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
+        
+        
     }
 
 }

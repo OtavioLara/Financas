@@ -13,12 +13,12 @@ import java.util.HashMap;
  * @author Otavio
  */
 public class ItemDespesaGrupo extends Item{
-    private HashMap<Pessoa,DividaItem> dividaItem;
+    private HashMap<String,DividaItem> dividaItem;
     public ItemDespesaGrupo(String nome, double valor) {
         super(nome, valor);
         dividaItem = new HashMap<>();
     }
-    public ItemDespesaGrupo(String nome, double valor, HashMap<Pessoa,DividaItem> dividaItem) {
+    public ItemDespesaGrupo(String nome, double valor, HashMap<String,DividaItem> dividaItem) {
         super(nome, valor);
         this.dividaItem = dividaItem;
     }
@@ -32,10 +32,10 @@ public class ItemDespesaGrupo extends Item{
             throw new UsuarioNotInItemException(p.getNome(), getNome());
         }
     }
-    public void adicionarPessoa(Pessoa p,DividaItem dividaItem){
-        this.dividaItem.put(p,dividaItem);
+    public void adicionarPessoa(String username,DividaItem dividaItem){
+        this.dividaItem.put(username,dividaItem);
     }
-    public void alterarValorItem(Pessoa p, double novoValor){
-        this.dividaItem.put(p, new DividaItem(novoValor));
+    public void alterarValorItem(String username, double novoValor){
+        this.dividaItem.put(username, new DividaItem(novoValor));
     }
 }

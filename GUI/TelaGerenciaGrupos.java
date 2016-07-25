@@ -6,13 +6,10 @@
 package financasgenerica.GUI;
 
 import financasgenerica.Grupo;
-import financasgenerica.UsuarioLogado;
-import financasgenerica.controler.ControlerUsuario;
 import financasgenerica.repositorio.RepositorioGrupo;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.DefaultListModel;
@@ -36,6 +33,7 @@ class TelaGerenciaGrupos extends TelaLogado {
 
     private JButton btnRecarregar;
     private JButton btnCriarGrupo;
+    private JButton btnVoltar;
 
     JScrollPane listScroller;
 
@@ -56,11 +54,8 @@ class TelaGerenciaGrupos extends TelaLogado {
         gbl = new GridBagLayout();
         gbc = new GridBagConstraints();
 
-        setSize(300, 250);
-        setLayout(gbl);
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         construirTela();
+        pack();
         setLocationRelativeTo(null);
     }
 
@@ -77,14 +72,12 @@ class TelaGerenciaGrupos extends TelaLogado {
         lstModelo = new DefaultListModel<>();
         criarListaDeGrupos();
 
-        if (lstIntegrantes == null) {
-            lstIntegrantes = new JList<>(lstModelo);
-            lstIntegrantes.setLayoutOrientation(JList.VERTICAL_WRAP);
-            lstIntegrantes.setVisibleRowCount(-1);
+        lstIntegrantes = new JList<>(lstModelo);
+        lstIntegrantes.setLayoutOrientation(JList.VERTICAL);
+        lstIntegrantes.setVisibleRowCount(-1);
 
-            listScroller = new JScrollPane(lstIntegrantes);
-            listScroller.setPreferredSize(new Dimension(100, 80));
-        }
+        listScroller = new JScrollPane(lstIntegrantes);
+        listScroller.setPreferredSize(new Dimension(100, 80));
 
         btnRecarregar = new JButton("Recarregar");
         btnRecarregar.addActionListener(new ActionListener() {
@@ -103,15 +96,25 @@ class TelaGerenciaGrupos extends TelaLogado {
                 tl.setVisible(true);
             }
         });
+        btnVoltar = new JButton("Voltar");
+        btnVoltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TelaPrincipal tl = new TelaPrincipal();
+                tl.setVisible(true);
+                dispose();
+            }
+        });
+        JPanel painelGrupos = new JPanel(getLogadoLayout());
+        adicionarComponente(painelGrupos, listScroller, 0, 0, 1, GridBagConstraints.BOTH);
+        painelGrupos.setBorder(javax.swing.BorderFactory.createTitledBorder("Seus grupos"));
 
-        JPanel painel = new JPanel(getLogadoLayout());
+        JPanel painelBotoes = new JPanel(getLogadoLayout());
+        adicionarComponente(painelBotoes, btnCriarGrupo, 0, 0, 1, GridBagConstraints.BOTH);
+        adicionarComponente(painelBotoes, btnRecarregar, 1, 0, 1, GridBagConstraints.BOTH);
+        adicionarComponente(painelBotoes, btnVoltar, 2, 0, 1, GridBagConstraints.BOTH);
 
-        adicionarComponente(painel, listScroller, 0, 0, 3, GridBagConstraints.LINE_START, new Insets(5, 5, 5, 5));
-
-        adicionarComponente(painel, 0, 0, 3, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
-        adicionarComponente(btnCriarGrupo, 2, 0, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
-        adicionarComponente(btnRecarregar, 2, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
-
+        adicionarComponente(painelGrupos, 0, 0, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
+        adicionarComponente(painelBotoes, 0, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
     }
-
 }

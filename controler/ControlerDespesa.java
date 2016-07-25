@@ -24,13 +24,13 @@ import java.util.HashMap;
  * @author Otavio
  */
 public class ControlerDespesa {
-
+    
     public static void cadastrarDespesaIndividual(String nome, double valor, String descricao, Date data, String userName, ArrayList<ItemDespesaIndividual> itens) {
-        RepositorioDespesa.adicionarDespesa(new DespesaIndividual(nome, valor, descricao, data, RepositorioUsuario.getUsuario(userName), itens));
+        RepositorioDespesa.adicionarDespesa(new DespesaIndividual(nome, valor, descricao, data, userName, itens));
     }
 
-    public static void cadastrarDespesaGrupo(String nome, double valor, String descricao, Date data, Date dataAlerta, Grupo grupo, HashMap<Pessoa, DividaDespesa> integrantes, ArrayList<ItemDespesaGrupo> itens) {
-        RepositorioDespesa.adicionarDespesa(new DespesaGrupo(nome, valor, descricao, data, dataAlerta, grupo, integrantes, itens));
+    public static void cadastrarDespesaGrupo(String nome, double valor, String descricao, Date data, Date dataAlerta, long idGrupo, HashMap<String, DividaDespesa> integrantes, ArrayList<ItemDespesaGrupo> itens) {
+        RepositorioDespesa.adicionarDespesa(new DespesaGrupo(nome, valor, descricao, data, dataAlerta, idGrupo, integrantes, itens));
     }
     public static void getTotalDespesas(Pessoa pessoa){
         ArrayList<Despesa> despesas= RepositorioDespesa.getDespesas(pessoa);

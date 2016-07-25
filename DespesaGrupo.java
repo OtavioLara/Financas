@@ -7,10 +7,8 @@ package financasgenerica;
 
 import financasgenerica.exceptions.SomaNaoCorrespondeAValorException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  *
@@ -20,14 +18,14 @@ public class DespesaGrupo extends Despesa{
 
     private Date dataAlerta;
     private ArrayList<ItemDespesaGrupo> itens;
-    private HashMap<Pessoa, DividaDespesa> integrantes;
-    private Grupo grupo;
+    private HashMap<String, DividaDespesa> integrantes;
+    private long idGrupo;
     
     public DespesaGrupo(String nome, double valor, String descricao, Date data,
-            Date dataAlerta,Grupo grupo, HashMap<Pessoa, DividaDespesa> integrantes,
+            Date dataAlerta,long idGrupo, HashMap<String, DividaDespesa> integrantes,
             ArrayList<ItemDespesaGrupo> itens) {
         super(nome, valor, data, descricao);
-        this.grupo = grupo;
+        this.idGrupo = idGrupo;
         this.integrantes = integrantes;
         this.dataAlerta = dataAlerta;
         setItens(itens, valor);
@@ -35,19 +33,12 @@ public class DespesaGrupo extends Despesa{
 
 
     public void removerIntegrante(Usuario u) {
-        if (integrantes.containsKey(u)) {
-            integrantes.remove(u);
+        if (getIntegrantes().containsKey(u)) {
+            getIntegrantes().remove(u);
         }
-        if (integrantes.isEmpty()) {
+        if (getIntegrantes().isEmpty()) {
 
         }
-    }
-
-    public void inserirIntegrante(Usuario u) {
-        if (!integrantes.containsKey(u)) {
-            integrantes.put(u, new DividaDespesa(0, 0));
-        }
-
     }
 
     public void setItens(ArrayList<ItemDespesaGrupo> itens, double valor) {
@@ -72,6 +63,34 @@ public class DespesaGrupo extends Despesa{
     
     @Override
     public boolean isParticipante(Pessoa pessoa) {
-        return integrantes.containsKey(pessoa);
+        return getIntegrantes().containsKey(pessoa);
+    }
+
+    /**
+     * @return the dataAlerta
+     */
+    public Date getDataAlerta() {
+        return dataAlerta;
+    }
+
+    /**
+     * @return the itens
+     */
+    public ArrayList<ItemDespesaGrupo> getItens() {
+        return itens;
+    }
+
+    /**
+     * @return the integrantes
+     */
+    public HashMap<String, DividaDespesa> getIntegrantes() {
+        return integrantes;
+    }
+
+    /**
+     * @return the idGrupo
+     */
+    public long getIdGrupo() {
+        return idGrupo;
     }
 }
