@@ -3,20 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package financasgenerica;
+package financasgenerica.beans;
+
+import java.io.Serializable;
 
 /**
  *
  * @author Otavio
  */
-public abstract class Pessoa {
+public class PessoaBeans implements Serializable{
+
     private String nome;
     private String email;
 
-    public Pessoa(String nome, String email){
-        this.nome = nome;
-        this.email = email;
-    }
     /**
      * @return the nome
      */
@@ -44,5 +43,4 @@ public abstract class Pessoa {
     public void setEmail(String email) {
         this.email = email;
     }
-    
 }

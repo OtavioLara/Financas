@@ -23,11 +23,7 @@ public class Usuario extends Pessoa implements Comparable<Usuario>{
     }
 
     public boolean logar(String userName, String senha) {
-        if (this.userName.equals(userName)) {
-            return this.senha.equals(senha);
-        } else {
-            return false;
-        }
+        return (this.userName.equals(userName)) && (this.senha.equals(senha));
     }
 
     public boolean alterarSenha(String senhaAntiga, String novaSenha) {
@@ -78,6 +74,10 @@ public class Usuario extends Pessoa implements Comparable<Usuario>{
     @Override
     public int compareTo(Usuario o) {
         return userName.compareTo(o.userName);
+    }
+
+    public String getSenha() {
+        return senha;
     }
     
     

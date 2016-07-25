@@ -8,7 +8,7 @@ package financasgenerica.controler;
 import financasgenerica.Grupo;
 import financasgenerica.Usuario;
 import financasgenerica.repositorio.RepositorioGrupo;
-import financasgenerica.repositorio.RepositorioUsuario;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,6 +17,13 @@ import financasgenerica.repositorio.RepositorioUsuario;
 public class ControlerGrupo {
 
     public static void adicionarGrupo(String nome, Usuario usuarioAdministrador) {
-        RepositorioGrupo.cadastrarGrupo(new Grupo(nome, usuarioAdministrador));
+        RepositorioGrupo.adicionarGrupo(new Grupo(nome, usuarioAdministrador));
+    }
+    public static void adicionarGrupo(String nome, Usuario usuarioAdministrador,ArrayList<Usuario> integrantes) {
+        
+        RepositorioGrupo.adicionarGrupo(new Grupo(nome, usuarioAdministrador,integrantes));
+    }
+    public static ArrayList<Grupo> gruposDoUsuarioLogado(){
+        return RepositorioGrupo.gruposDoUsuarioLogado();
     }
 }

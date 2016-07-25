@@ -8,13 +8,22 @@ package financasgenerica;
 import financasgenerica.exceptions.UsuarioNotInGrupoException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  *
  * @author Otavio
  */
 public class Grupo {
+
+    /**
+     * @return the totalGrupos
+     */
+    public static long getTotalGrupos() {
+        return totalGrupos;
+    }
 
     /**
      * HashMap onde a chave (key) é um usuário e o valor (value) é um boolean
@@ -27,59 +36,95 @@ public class Grupo {
 
     public Grupo(String nome, Usuario usuarioAdministrador) {
         this.nome = nome;
-        addParticipante(usuarioAdministrador,true);
+        participantes = new HashMap<>();
+        addParticipante(usuarioAdministrador, true);
         totalGrupos++;
-        id = totalGrupos+1;
+        id = totalGrupos + 1;
     }
+
     public Grupo(String nome, Usuario usuarioAdministrador, ArrayList<Usuario> usuarios) {
         this(nome, usuarioAdministrador);
         addParticipantes(usuarios);
-        
-    }
-    public void addParticipantes(ArrayList<Usuario> participantes){
-        for (Usuario participante : participantes) {
-            addParticipante(participante,false);
-        }
-    }
-    public void addParticipante(Usuario u) {
-        participantes.put(u, false);
+
     }
 
-    public void addParticipante(Usuario u, boolean isAdm) {
-        participantes.put(u, isAdm);
+    public Grupo(String nome, HashMap<Usuario, Boolean> participantes) {
+        this.nome = nome;
+        this.participantes = participantes;
+    }
+
+    public void addParticipantes(ArrayList<Usuario> participantes) {
+        for (Usuario participante : participantes) {
+            addParticipante(participante, false);
+        }
+    }
+
+    public void addParticipante(Usuario usuario) {
+        if (usuario != null) {
+            getParticipantes().put(usuario, false);
+        }
+    }
+
+    public void addParticipante(Usuario usuario, boolean isAdm) {
+        if (usuario != null) {
+            getParticipantes().put(usuario, isAdm);
+        }
     }
 
     public void setAdministrador(Usuario u, boolean newAdmState) throws UsuarioNotInGrupoException {
-        if (participantes.containsKey(u)) {
-            participantes.put(u, newAdmState);
+        if (getParticipantes().containsKey(u)) {
+            getParticipantes().put(u, newAdmState);
         } else {
             throw new UsuarioNotInGrupoException(u.getNome(), nome);
         }
     }
-    public boolean isAdministrador(Usuario u){
-        if(isParticipante(u)){
-            return participantes.get(u);
+
+    public boolean isAdministrador(String username) {
+        if (isParticipante(username)) {
+            for (Map.Entry<Usuario, Boolean> entry : participantes.entrySet()) {
+                Usuario key = entry.getKey();
+                Boolean value = entry.getValue();
+                if (key.getUserName().equals(username) && value == true) {
+                    return true;
+                }
+            }
         }
         return false;
     }
-    public boolean isParticipante(Usuario u){
-        return participantes.containsKey(u);
+
+    public boolean isParticipante(String username) {
+        Set<Usuario> usuarios = participantes.keySet();
+        for (Usuario usuario : usuarios) {
+            if (usuario.getUserName().equals(username)) {
+                return true;
+            }
+        }
+        return false;
     }
-    public void removeParticipante(Usuario removedor, Usuario aRemover)  {
-        if(isAdministrador(removedor)){
-            if(isParticipante(aRemover)){
-                participantes.remove(aRemover);
+
+    public void removeParticipante(String removedor, String aRemover) {
+        if (isAdministrador(removedor)) {
+            if (isParticipante(aRemover)) {
+                for (Map.Entry<Usuario, Boolean> entry : participantes.entrySet()) {
+                    Usuario key = entry.getKey();
+                    Boolean value = entry.getValue();
+                    if (key.getUserName().equals(aRemover)) {
+                        participantes.remove(key);
+                    }
+                }
             }
         }
     }
-    public void removeParticipante(Usuario usuario){
-        if(isParticipante(usuario)){
-            participantes.remove(usuario);
-        }
-    }
-    public String getNome(){
+
+    public String getNome() {
         return this.nome;
     }
+
+    @Override
+    public String toString() {
+        return nome;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -94,8 +139,19 @@ public class Grupo {
         }
         return true;
     }
-    
-    
-    
-        
+
+    /**
+     * @return the participantes
+     */
+    public HashMap<Usuario, Boolean> getParticipantes() {
+        return participantes;
+    }
+
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
 }

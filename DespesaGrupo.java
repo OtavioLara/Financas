@@ -22,15 +22,13 @@ public class DespesaGrupo extends Despesa{
     private ArrayList<ItemDespesaGrupo> itens;
     private HashMap<Pessoa, DividaDespesa> integrantes;
     private Grupo grupo;
-    //private Usuario criador;
     
     public DespesaGrupo(String nome, double valor, String descricao, Date data,
             Date dataAlerta,Grupo grupo, HashMap<Pessoa, DividaDespesa> integrantes,
-            ArrayList<ItemDespesaGrupo> itens/*, Usuario criador*/) {
+            ArrayList<ItemDespesaGrupo> itens) {
         super(nome, valor, data, descricao);
         this.grupo = grupo;
         this.integrantes = integrantes;
-        //this.criador = criador;
         this.dataAlerta = dataAlerta;
         setItens(itens, valor);
     }
@@ -43,10 +41,6 @@ public class DespesaGrupo extends Despesa{
         if (integrantes.isEmpty()) {
 
         }
-//      if (u.equals(criador)) {
-//          Usuario[] p = (Usuario[])integrantes.keySet().toArray();
-//          this.criador = p[0];
-//      }
     }
 
     public void inserirIntegrante(Usuario u) {
@@ -75,7 +69,7 @@ public class DespesaGrupo extends Despesa{
         }
         return soma;
     }
-
+    
     @Override
     public boolean isParticipante(Pessoa pessoa) {
         return integrantes.containsKey(pessoa);

@@ -5,6 +5,7 @@
  */
 package financasgenerica.controler;
 
+import financasgenerica.Despesa;
 import financasgenerica.DespesaGrupo;
 import financasgenerica.DespesaIndividual;
 import financasgenerica.DividaDespesa;
@@ -30,6 +31,12 @@ public class ControlerDespesa {
 
     public static void cadastrarDespesaGrupo(String nome, double valor, String descricao, Date data, Date dataAlerta, Grupo grupo, HashMap<Pessoa, DividaDespesa> integrantes, ArrayList<ItemDespesaGrupo> itens) {
         RepositorioDespesa.adicionarDespesa(new DespesaGrupo(nome, valor, descricao, data, dataAlerta, grupo, integrantes, itens));
+    }
+    public static void getTotalDespesas(Pessoa pessoa){
+        ArrayList<Despesa> despesas= RepositorioDespesa.getDespesas(pessoa);
+        for (Despesa despesa : despesas) {
+            despesa.getValor();
+        }
     }
     
 }
