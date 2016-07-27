@@ -20,8 +20,6 @@ import javax.swing.JPanel;
  */
 public class TelaPrincipal extends TelaLogado {
 
-
-
     private JLabel lblDivida;
     private JLabel lblAReceber;
     private JLabel lblValorDivida;
@@ -41,6 +39,10 @@ public class TelaPrincipal extends TelaLogado {
         setLocationRelativeTo(null);
     }
 
+    private void atualizarDespesas() {
+        //TODO
+    }
+
     private void construirTela() {
 
         lblDivida = new JLabel("Preciso pagar");
@@ -48,7 +50,7 @@ public class TelaPrincipal extends TelaLogado {
         lblValorDivida = new JLabel("R$ 0,00");
 
         lblValorAReceber = new JLabel("R$ 0,00");
-
+        atualizarDespesas();
         btnCadastrarDespesaGrupo = new JButton("Cadastro despesa grupo");
         btnCadastrarDespesaIndividual = new JButton("Cadastro despesa individual");
         btnCadastrarDespesaIndividual.addActionListener(new ActionListener() {

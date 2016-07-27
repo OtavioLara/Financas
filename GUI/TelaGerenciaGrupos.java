@@ -25,9 +25,6 @@ import javax.swing.JScrollPane;
  */
 class TelaGerenciaGrupos extends TelaLogado {
 
-    GridBagLayout gbl;
-    GridBagConstraints gbc;
-
     private JList<Grupo> lstIntegrantes;
     private DefaultListModel<Grupo> lstModelo;
 
@@ -37,22 +34,9 @@ class TelaGerenciaGrupos extends TelaLogado {
 
     JScrollPane listScroller;
 
-    public TelaGerenciaGrupos(GridBagLayout gbl, GridBagConstraints gbc, JList<Grupo> lstIntegrantes, DefaultListModel<Grupo> lstModelo, JButton btnRecarregar, JButton btnCriarGrupo, JScrollPane listScroller, String nome) {
-        super(nome);
-        this.gbl = gbl;
-        this.gbc = gbc;
-        this.lstIntegrantes = lstIntegrantes;
-        this.lstModelo = lstModelo;
-        this.btnRecarregar = btnRecarregar;
-        this.btnCriarGrupo = btnCriarGrupo;
-        this.listScroller = listScroller;
-    }
 
     public TelaGerenciaGrupos() {
-        super("Gerenciador de Grupos");
-
-        gbl = new GridBagLayout();
-        gbc = new GridBagConstraints();
+        super("Gerenciador de grupos");
 
         construirTela();
         pack();
@@ -64,7 +48,6 @@ class TelaGerenciaGrupos extends TelaLogado {
         for (Grupo grupo : RepositorioGrupo.gruposDoUsuarioLogado()) {
             lstModelo.addElement(grupo);
         }
-
     }
 
     private void construirTela() {
@@ -79,20 +62,11 @@ class TelaGerenciaGrupos extends TelaLogado {
         listScroller = new JScrollPane(lstIntegrantes);
         listScroller.setPreferredSize(new Dimension(100, 80));
 
-        btnRecarregar = new JButton("Recarregar");
-        btnRecarregar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                criarListaDeGrupos();
-
-            }
-        });
-
         btnCriarGrupo = new JButton("Criar grupo");
         btnCriarGrupo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TelaCriarGrupo tl = new TelaCriarGrupo();
+                TelaCriarGrupo tl = new TelaCriarGrupo(lstModelo);
                 tl.setVisible(true);
             }
         });
@@ -111,8 +85,7 @@ class TelaGerenciaGrupos extends TelaLogado {
 
         JPanel painelBotoes = new JPanel(getLogadoLayout());
         adicionarComponente(painelBotoes, btnCriarGrupo, 0, 0, 1, GridBagConstraints.BOTH);
-        adicionarComponente(painelBotoes, btnRecarregar, 1, 0, 1, GridBagConstraints.BOTH);
-        adicionarComponente(painelBotoes, btnVoltar, 2, 0, 1, GridBagConstraints.BOTH);
+        adicionarComponente(painelBotoes, btnVoltar, 1, 0, 1, GridBagConstraints.BOTH);
 
         adicionarComponente(painelGrupos, 0, 0, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
         adicionarComponente(painelBotoes, 0, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);

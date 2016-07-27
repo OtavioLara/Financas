@@ -5,10 +5,12 @@
  */
 package financasgenerica.GUI;
 
+import financasgenerica.Grupo;
 import financasgenerica.Usuario;
 import financasgenerica.UsuarioLogado;
 import financasgenerica.controler.ControlerGrupo;
 import financasgenerica.controler.ControlerUsuario;
+import financasgenerica.repositorio.RepositorioGrupo;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
@@ -40,17 +42,24 @@ public class TelaCriarGrupo extends TelaLogado {
     private JButton btnMaisItegrantes;
     private JButton btnCriarGrupo;
     private JButton btnCancelar;
-    
+
     private ArrayList<Usuario> listaUsuarios;
 
-    public TelaCriarGrupo() {
+    public TelaCriarGrupo(DefaultListModel<Grupo> lstModeloGrupos) {
         super("Criar grupo");
-        construirTela();
+        construirTela(lstModeloGrupos);
         pack();
         setLocationRelativeTo(null);
     }
 
-    private void construirTela() {
+    private void criarListaDeGrupos(DefaultListModel<Grupo> lstModeloGrupos) {
+        lstModeloGrupos.clear();
+        for (Grupo grupo : RepositorioGrupo.gruposDoUsuarioLogado()) {
+            lstModeloGrupos.addElement(grupo);
+        }
+    }
+
+    private void construirTela(DefaultListModel<Grupo> lstModeloGrupos) {
         lblNomeGrupo = new JLabel("Nome do grupo");
 
         lstModelo = new DefaultListModel<>();
@@ -62,11 +71,11 @@ public class TelaCriarGrupo extends TelaLogado {
 
         JScrollPane listScroller = new JScrollPane(lstIntegrantes);
         listScroller.setPreferredSize(new Dimension(100, 80));
-        
+
         listaUsuarios = new ArrayList<>();
         listaUsuarios.add(ControlerUsuario.getUsuario(UsuarioLogado.getInstance().getUsuario()));
         txtNomeGrupo = new JTextField(15);
-        
+
         btnMaisItegrantes = new JButton("add integrante");
         btnMaisItegrantes.addActionListener(new ActionListener() {
             @Override
@@ -92,11 +101,12 @@ public class TelaCriarGrupo extends TelaLogado {
                     JOptionPane.showMessageDialog(null, "Para ser um grupo deve haver mais de uma pessoa", "Tamanho insuficiente", JOptionPane.ERROR_MESSAGE);
                 } else {
                     ControlerGrupo.adicionarGrupo(txtNomeGrupo.getText(), ControlerUsuario.getUsuario(UsuarioLogado.getInstance().getUsuario()), listaUsuarios);
+                    criarListaDeGrupos(lstModeloGrupos);
                     JOptionPane.showMessageDialog(null, "Grupo cadastrado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 }
             }
-        });    
+        });
         btnCancelar = new JButton("Cancelar");
         btnCancelar.addActionListener(new ActionListener() {
             @Override
@@ -108,18 +118,16 @@ public class TelaCriarGrupo extends TelaLogado {
         adicionarComponente(painelIntegrantes, listScroller, 0, 0, 3, GridBagConstraints.LINE_START);
         adicionarComponente(painelIntegrantes, btnMaisItegrantes, 1, 0, 2, GridBagConstraints.LINE_END);
         painelIntegrantes.setBorder(javax.swing.BorderFactory.createTitledBorder("Integrantes"));
-        
+
         JPanel painelBotoes = new JPanel(getLogadoLayout());
         adicionarComponente(painelBotoes, btnCriarGrupo, 0, 0, 2, GridBagConstraints.BOTH);
         adicionarComponente(painelBotoes, btnCancelar, 0, 2, 1, GridBagConstraints.BOTH);
-        
 
         adicionarComponente(lblNomeGrupo, 0, 0, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
         adicionarComponente(txtNomeGrupo, 0, 1, 2, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
         adicionarComponente(painelIntegrantes, 1, 0, 3, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
         adicionarComponente(painelBotoes, 2, 0, 3, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
-        
-        
+
     }
 
 }

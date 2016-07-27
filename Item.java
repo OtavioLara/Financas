@@ -32,6 +32,6 @@ public abstract class Item {
     }
     @Override
     public String toString(){
-        return String.format("Nome: %s , Valor: %f", nome, valor);
+        return String.format("Nome: %s Valor: %.2f", nome, valor);
     }
 }

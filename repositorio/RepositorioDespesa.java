@@ -35,10 +35,12 @@ public class RepositorioDespesa {
     private static HashMap<Long, Despesa> despesas;
     private static long id;
 
-    public static void adicionarDespesa(Despesa despesa) {
-//        carregarDespesas();
+    public static boolean adicionarDespesa(Despesa despesa) {
+        carregarDespesasBeans();
+        id++;
         despesas.put(id, despesa);
         gravarDespesa(despesasToDespesasBeans());
+        return true;
     }
 
     private static void gravarDespesa(HashMap<Long, DespesaBeans> despesasToDespesasBeans) {

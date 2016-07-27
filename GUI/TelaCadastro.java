@@ -145,7 +145,9 @@ class TelaCadastro extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "Digite uma senha para válida", "Campo Vazio", JOptionPane.ERROR_MESSAGE);
         } else if (txtSenhaNovamente.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Confirme a senha digitada", "Campo Vazio", JOptionPane.ERROR_MESSAGE);
-        } else {
+        } else if (!txtSenha.getText().equals(txtSenhaNovamente.getText())){
+            JOptionPane.showMessageDialog(null, "As senha digitadas devem ser iguais", "Campo Vazio", JOptionPane.ERROR_MESSAGE);
+        }else{
             try {
                 ControlerUsuario.cadastrarUsuario(txtNome.getText(), txtEmail.getText(), txtUsername.getText(), txtSenha.getText());
                 TelaLogin tl = new TelaLogin();
