@@ -38,4 +38,8 @@ public class ItemDespesaGrupo extends Item{
     public void alterarValorItem(String username, double novoValor){
         this.dividaItem.put(username, new DividaItem(novoValor));
     }
+
+    public HashMap<String, DividaItem> getDividaItem() {
+        return dividaItem;
+    }
 }

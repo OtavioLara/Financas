@@ -9,7 +9,7 @@ package financasgenerica;
  *
  * @author Otavio
  */
-class DividaItem extends Divida {
+public class DividaItem extends Divida {
     
     public DividaItem(double valor) {
         super(valor);

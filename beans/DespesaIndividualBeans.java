@@ -5,7 +5,6 @@
  */
 package financasgenerica.beans;
 
-import financasgenerica.ItemDespesaIndividual;
 import java.io.Serializable;
 import java.util.ArrayList;
 

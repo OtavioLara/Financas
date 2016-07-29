@@ -6,6 +6,7 @@
 package financasgenerica;
 
 import financasgenerica.exceptions.SomaNaoCorrespondeAValorException;
+import financasgenerica.repositorio.RepositorioUsuario;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -62,8 +63,8 @@ public class DespesaGrupo extends Despesa{
     }
     
     @Override
-    public boolean isParticipante(Pessoa pessoa) {
-        return getIntegrantes().containsKey(pessoa);
+    public boolean isParticipante(Usuario usuario) {
+        return getIntegrantes().containsKey(usuario);
     }
 
     /**

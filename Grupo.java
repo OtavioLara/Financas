@@ -153,5 +153,4 @@ public class Grupo {
     public long getId() {
         return id;
     }
-
 }

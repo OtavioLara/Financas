@@ -8,15 +8,24 @@ package financasgenerica.repositorio;
 import financasgenerica.Despesa;
 import financasgenerica.DespesaGrupo;
 import financasgenerica.DespesaIndividual;
+import financasgenerica.DividaDespesa;
+import financasgenerica.DividaItem;
+import financasgenerica.Item;
+import financasgenerica.ItemDespesaGrupo;
 import financasgenerica.ItemDespesaIndividual;
-import financasgenerica.Pessoa;
+import financasgenerica.UsuarioLogado;
 import financasgenerica.beans.DespesaBeans;
 import financasgenerica.beans.DespesaGrupoBeans;
 import financasgenerica.beans.DespesaIndividualBeans;
+import financasgenerica.beans.DividaDespesaBeans;
+import financasgenerica.beans.DividaItemBeans;
+import financasgenerica.beans.ItemDespesaGrupoBeans;
 import financasgenerica.beans.ItemDespesaIndividualBeans;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -55,6 +64,14 @@ public class RepositorioDespesa {
         } catch (IOException ex) {
             Logger.getLogger(RepositorioGrupo.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try {
+            FileWriter fw = new FileWriter("id.fgd");
+            fw.write(Long.toString(id));
+            fw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(RepositorioDespesa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     private static HashMap<Long, DespesaBeans> despesasToDespesasBeans() {
@@ -67,28 +84,82 @@ public class RepositorioDespesa {
                 DespesaIndividual despesaIndividual = (DespesaIndividual) value;
                 despesaIdividualBeans.setData(despesaIndividual.getData());
                 despesaIdividualBeans.setDescricao(despesaIndividual.getDescricao());
-                despesaIdividualBeans.setItens(itensDespesaIdividualToBeans(despesaIndividual.getItens()));
+                despesaIdividualBeans.setItens(itensDespesaIndividualToItensBeans(despesaIndividual.getItens()));
                 despesaIdividualBeans.setNome(despesaIndividual.getNome());
                 despesaIdividualBeans.setUsuario(despesaIndividual.getUsuario());
                 despesaIdividualBeans.setValor(despesaIndividual.getValor());
+                
                 despesasBeans.put(key, despesaIdividualBeans);
             }
             if (value instanceof DespesaGrupo) {
-                //TODO
+                DespesaGrupoBeans despesaGrupoBeans = new DespesaGrupoBeans();
+                DespesaGrupo despesaGrupo = (DespesaGrupo) value;
+                despesaGrupoBeans.setData(despesaGrupo.getData());
+                despesaGrupoBeans.setDataAlerta(despesaGrupo.getDataAlerta());
+                despesaGrupoBeans.setIdGrupo(despesaGrupo.getIdGrupo());
+                despesaGrupoBeans.setIntegrantes(dividaDespesaToDividaDespesaBeans(despesaGrupo.getIntegrantes()));
+                despesaGrupoBeans.setItens(itensDespesaGrupoToItensBeans(despesaGrupo.getItens()));
+                despesaGrupoBeans.setDescricao(despesaGrupo.getDescricao());
+                despesaGrupoBeans.setNome(despesaGrupo.getNome());
+                despesaGrupoBeans.setValor(despesaGrupo.getValor());
+                
+                despesasBeans.put(key, despesaGrupoBeans);
             }
         }
         return despesasBeans;
     }
+    
+    private static HashMap<String, DividaDespesaBeans> dividaDespesaToDividaDespesaBeans(HashMap<String, DividaDespesa> integrantes) {
+        HashMap<String, DividaDespesaBeans> dividaDespesaBeans = new HashMap<>();
 
-    private static ArrayList<ItemDespesaIndividualBeans> itensDespesaIdividualToBeans(ArrayList<ItemDespesaIndividual> itens) {
+        for (Map.Entry<String, DividaDespesa> entry : integrantes.entrySet()) {
+            String key = entry.getKey();
+            DividaDespesa value = entry.getValue();
+            DividaDespesaBeans dividaBeans = new DividaDespesaBeans();
+            dividaBeans.setValor(value.getValor());
+            dividaBeans.setValorPago(value.getValorPago());
+            
+            dividaDespesaBeans.put(key, dividaBeans);
+        }
+        return dividaDespesaBeans;
+    }
+
+    private static ArrayList<ItemDespesaIndividualBeans> itensDespesaIndividualToItensBeans(ArrayList<ItemDespesaIndividual> itens) {
         ArrayList<ItemDespesaIndividualBeans> itensBeans = new ArrayList<>();
-        for (ItemDespesaIndividual item : itens) {
+        for (Item item : itens) {
             ItemDespesaIndividualBeans itemBeans = new ItemDespesaIndividualBeans();
             itemBeans.setNome(item.getNome());
             itemBeans.setValor(item.getValor());
+
             itensBeans.add(itemBeans);
         }
         return itensBeans;
+    }
+
+    private static ArrayList<ItemDespesaGrupoBeans> itensDespesaGrupoToItensBeans(ArrayList<ItemDespesaGrupo> itens) {
+        ArrayList<ItemDespesaGrupoBeans> itensBeans = new ArrayList<>();
+        for (Item item : itens) {
+            ItemDespesaGrupoBeans itemBeans = new ItemDespesaGrupoBeans();
+            itemBeans.setNome(item.getNome());
+            itemBeans.setValor(item.getValor());
+            itemBeans.setDividaItem(dividaItemToDividaItemBeans(((ItemDespesaGrupo) item).getDividaItem()));
+
+            itensBeans.add(itemBeans);
+        }
+        return itensBeans;
+    }
+
+    private static HashMap<String, DividaItemBeans> dividaItemToDividaItemBeans(HashMap<String, DividaItem> dividaItem) {
+        HashMap<String, DividaItemBeans> dividasItemBeans = new HashMap<>();
+        for (Map.Entry<String, DividaItem> entry : dividaItem.entrySet()) {
+            String key = entry.getKey();
+            DividaItem value = entry.getValue();
+            DividaItemBeans dividaItemBeans = new DividaItemBeans();
+            dividaItemBeans.setValor(value.getValor());
+            
+            dividasItemBeans.put(key, dividaItemBeans);
+        }
+        return dividasItemBeans;
     }
 
     private static void carregarDespesasBeans() {
@@ -102,6 +173,13 @@ public class RepositorioDespesa {
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(RepositorioUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try {
+            FileReader fr = new FileReader("id.fgd");
+            id = (long) fr.read();
+            fr.close();
+        } catch (IOException ex) {
+            Logger.getLogger(RepositorioDespesa.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private static void carregarDespesas(HashMap<Long, DespesaBeans> hashMap) {
@@ -111,12 +189,47 @@ public class RepositorioDespesa {
             DespesaBeans value = entry.getValue();
             if (value instanceof DespesaIndividualBeans) {
                 despesas.put(key, new DespesaIndividual(value.getNome(), value.getValor(), value.getDescricao(),
-                        value.getData(), ((DespesaIndividualBeans)value).getUsuario(),
-                        beansToItemDespesaIndividual(((DespesaIndividualBeans)value).getItens())));
+                        value.getData(), ((DespesaIndividualBeans) value).getUsuario(),
+                        beansToItemDespesaIndividual(((DespesaIndividualBeans) value).getItens())));
             } else if (value instanceof DespesaGrupoBeans) {
-
+                despesas.put(key, new DespesaGrupo(value.getNome(), value.getValor(), value.getDescricao(), value.getData(), ((DespesaGrupoBeans) value).getDataAlerta(),
+                        ((DespesaGrupoBeans) value).getIdGrupo(), dividaDespesaBeansToDividaDespesa((((DespesaGrupoBeans) value).getIntegrantes())), beansToItemDespesaGrupo(((DespesaGrupoBeans) value).getItens())));
             }
         }
+    }
+
+    private static HashMap<String, DividaDespesa> dividaDespesaBeansToDividaDespesa(HashMap<String, DividaDespesaBeans> participantesBeans) {
+        HashMap<String, DividaDespesa> participantes = new HashMap<>();
+        for (Map.Entry<String, DividaDespesaBeans> entry : participantesBeans.entrySet()) {
+            String key = entry.getKey();
+            DividaDespesaBeans value = entry.getValue();
+            DividaDespesa participante = new DividaDespesa(value.getValor(), value.getValorPago());
+            
+            participantes.put(key, participante);
+        }
+        return participantes;
+    }
+
+    private static ArrayList<ItemDespesaGrupo> beansToItemDespesaGrupo(ArrayList<ItemDespesaGrupoBeans> itensBeans) {
+        ArrayList<ItemDespesaGrupo> itens = new ArrayList<>();
+        for (ItemDespesaGrupoBeans itemBeans : itensBeans) {
+            ItemDespesaGrupo item = new ItemDespesaGrupo(itemBeans.getNome(), itemBeans.getValor(), dividaBeansToDivida(itemBeans.getDividaItem()));
+
+            itens.add(item);
+        }
+        return itens;
+    }
+
+    private static HashMap<String, DividaItem> dividaBeansToDivida(HashMap<String, DividaItemBeans> dividaItem) {
+        HashMap<String,DividaItem> dividas = new HashMap<>();
+        for (Map.Entry<String, DividaItemBeans> entry : dividaItem.entrySet()) {
+            String key = entry.getKey();
+            DividaItemBeans value = entry.getValue();
+            DividaItem divida = new DividaItem(value.getValor());
+            
+            dividas.put(key,divida);
+        }
+        return dividas;
     }
 
     private static ArrayList<ItemDespesaIndividual> beansToItemDespesaIndividual(ArrayList<ItemDespesaIndividualBeans> itensBeans) {
@@ -134,13 +247,16 @@ public class RepositorioDespesa {
         }
     }
 
-    public static ArrayList<Despesa> getDespesas(Pessoa pessoa) {
-        ArrayList<Despesa> despesasDoUsuario = new ArrayList<>();
-//        for (Despesa despesa : despesas) {
-//            if(despesa.isParticipante(pessoa)){
-//                despesasDoUsuario.add(despesa);
-//            }
-//        }
+    public static HashMap<Long, Despesa> getDespesasDoUsuarioLogado() {
+        carregarDespesasBeans();
+        HashMap<Long, Despesa> despesasDoUsuario = new HashMap<>();
+        for (Map.Entry<Long, Despesa> entry : despesas.entrySet()) {
+            Long key = entry.getKey();
+            Despesa value = entry.getValue();
+            if (value.isParticipante(RepositorioUsuario.getUsuario(UsuarioLogado.getInstance().getUsuario()))) {
+                despesasDoUsuario.put(key, value);
+            }
+        }
         return despesasDoUsuario;
     }
 

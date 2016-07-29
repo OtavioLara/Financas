@@ -12,7 +12,7 @@ import java.util.HashMap;
  *
  * @author Otavio
  */
-class ItemDespesaGrupoBeans extends ItemBeans implements Serializable {
+public class ItemDespesaGrupoBeans extends ItemBeans implements Serializable {
     private HashMap<String,DividaItemBeans> dividaItem;
 
     /**

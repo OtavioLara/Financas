@@ -52,6 +52,14 @@ public class TelaPrincipal extends TelaLogado {
         lblValorAReceber = new JLabel("R$ 0,00");
         atualizarDespesas();
         btnCadastrarDespesaGrupo = new JButton("Cadastro despesa grupo");
+        btnCadastrarDespesaGrupo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TelaDespesaGrupo tg = new TelaDespesaGrupo();
+                tg.setVisible(true);
+                dispose();
+            }
+        });
         btnCadastrarDespesaIndividual = new JButton("Cadastro despesa individual");
         btnCadastrarDespesaIndividual.addActionListener(new ActionListener() {
             @Override
@@ -63,6 +71,14 @@ public class TelaPrincipal extends TelaLogado {
         });
         btnContasPendentes = new JButton("Contas pendentes");
         btnHistorico = new JButton("Histórico de despesas");
+        btnHistorico.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TelaHistorico th = new TelaHistorico();
+                th.setVisible(true);
+                dispose();
+            }
+        });
         btnGrupos = new JButton("Administrar grupos");
         btnGrupos.addActionListener(new ActionListener() {
             @Override

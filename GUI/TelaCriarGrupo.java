@@ -29,7 +29,7 @@ import javax.swing.JTextField;
  *
  * @author Otavio
  */
-public class TelaCriarGrupo extends TelaLogado {
+public class TelaCriarGrupo extends TelaLogado implements Cadastra {
 
     private JLabel lblNomeGrupo;
 
@@ -42,7 +42,7 @@ public class TelaCriarGrupo extends TelaLogado {
     private JButton btnMaisItegrantes;
     private JButton btnCriarGrupo;
     private JButton btnCancelar;
-
+    private DefaultListModel<Grupo> lstModeloGrupos;
     private ArrayList<Usuario> listaUsuarios;
 
     public TelaCriarGrupo(DefaultListModel<Grupo> lstModeloGrupos) {
@@ -52,14 +52,15 @@ public class TelaCriarGrupo extends TelaLogado {
         setLocationRelativeTo(null);
     }
 
-    private void criarListaDeGrupos(DefaultListModel<Grupo> lstModeloGrupos) {
-        lstModeloGrupos.clear();
+    private void criarListaDeGrupos() {
+        this.lstModeloGrupos.clear();
         for (Grupo grupo : RepositorioGrupo.gruposDoUsuarioLogado()) {
             lstModeloGrupos.addElement(grupo);
         }
     }
 
     private void construirTela(DefaultListModel<Grupo> lstModeloGrupos) {
+        this.lstModeloGrupos = lstModeloGrupos;
         lblNomeGrupo = new JLabel("Nome do grupo");
 
         lstModelo = new DefaultListModel<>();
@@ -101,7 +102,7 @@ public class TelaCriarGrupo extends TelaLogado {
                     JOptionPane.showMessageDialog(null, "Para ser um grupo deve haver mais de uma pessoa", "Tamanho insuficiente", JOptionPane.ERROR_MESSAGE);
                 } else {
                     ControlerGrupo.adicionarGrupo(txtNomeGrupo.getText(), ControlerUsuario.getUsuario(UsuarioLogado.getInstance().getUsuario()), listaUsuarios);
-                    criarListaDeGrupos(lstModeloGrupos);
+                    criarListaDeGrupos();
                     JOptionPane.showMessageDialog(null, "Grupo cadastrado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 }
@@ -128,6 +129,25 @@ public class TelaCriarGrupo extends TelaLogado {
         adicionarComponente(painelIntegrantes, 1, 0, 3, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
         adicionarComponente(painelBotoes, 2, 0, 3, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
 
+    }
+
+    @Override
+    public void geraObjeto() {
+        ControlerGrupo.adicionarGrupo(txtNomeGrupo.getText(), ControlerUsuario.getUsuario(UsuarioLogado.getInstance().getUsuario()), listaUsuarios);
+    }
+
+    @Override
+    public void validaCampos() {
+        if (txtNomeGrupo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "O grupo precisa de um nome", "Grupo sem nome", JOptionPane.ERROR_MESSAGE);
+        } else if (listaUsuarios.size() == 1) {
+            JOptionPane.showMessageDialog(null, "Para ser um grupo deve haver mais de uma pessoa", "Tamanho insuficiente", JOptionPane.ERROR_MESSAGE);
+        } else {
+            geraObjeto();
+            criarListaDeGrupos();
+            JOptionPane.showMessageDialog(null, "Grupo cadastrado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+        }
     }
 
 }

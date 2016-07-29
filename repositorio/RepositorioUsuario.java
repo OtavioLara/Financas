@@ -70,9 +70,7 @@ public final class RepositorioUsuario {
             oi.close();
         } catch (FileNotFoundException ex) {
             usuarios = new HashMap<>();
-        } catch (IOException ex) {
-            Logger.getLogger(RepositorioUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(RepositorioUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

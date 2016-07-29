@@ -31,8 +31,8 @@ public class DespesaIndividual extends Despesa {
     }
 
     @Override
-    public boolean isParticipante(Pessoa pessoa) {
-        return getUsuario().equals((Usuario)pessoa);
+    public boolean isParticipante(Usuario usuario) {
+        return getUsuario().equals(usuario.getUserName());
     }
 
     /**

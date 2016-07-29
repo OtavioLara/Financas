@@ -31,11 +31,8 @@ public class ControlerDespesa {
         RepositorioDespesa.adicionarDespesa(new DespesaGrupo(nome, valor, descricao, data, dataAlerta, idGrupo, integrantes, itens));
     }
 
-    public static void getTotalDespesas(Pessoa pessoa) {
-        ArrayList<Despesa> despesas = RepositorioDespesa.getDespesas(pessoa);
-        for (Despesa despesa : despesas) {
-            despesa.getValor();
-        }
+    public static HashMap<Long,Despesa> getTotalDespesasDoUsuarioLogado() {
+        return RepositorioDespesa.getDespesasDoUsuarioLogado();
     }
 
 }

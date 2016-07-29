@@ -54,6 +54,6 @@ public abstract class Despesa {
         return data;
     }
 
-    public abstract boolean isParticipante(Pessoa pessoa);
+    public abstract boolean isParticipante(Usuario usuario);
     
 }

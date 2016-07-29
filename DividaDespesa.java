@@ -18,7 +18,9 @@ public class DividaDespesa extends Divida {
     }
 
     /**
-     * @return the valorPago
+     * compara duas dividas
+     * @param outra
+     * @return true se a divida for maior que outra e false se a divida for maior que a outra
      */
     public boolean isMaior(DividaDespesa outra){
         return this.getValor() == outra.getValor();
@@ -30,6 +32,8 @@ public class DividaDespesa extends Divida {
         return getValor() - valorPago;
     }
     public double valorAreceber(){
+        isMaior(this);
         return valorPago - getValor();
+    
     }
 }

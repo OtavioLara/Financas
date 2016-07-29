@@ -20,7 +20,7 @@ public class DespesaGrupoBeans extends DespesaBeans implements Serializable {
 
     private Date dataAlerta;
     private ArrayList<ItemDespesaGrupoBeans> itens;
-    private HashMap<String, DividaDespesa> integrantes;
+    private HashMap<String, DividaDespesaBeans> integrantes;
     private long idGrupo;
 
     /**
@@ -54,14 +54,14 @@ public class DespesaGrupoBeans extends DespesaBeans implements Serializable {
     /**
      * @return the integrantes
      */
-    public HashMap<String, DividaDespesa> getIntegrantes() {
+    public HashMap<String, DividaDespesaBeans> getIntegrantes() {
         return integrantes;
     }
 
     /**
      * @param integrantes the integrantes to set
      */
-    public void setIntegrantes(HashMap<String, DividaDespesa> integrantes) {
+    public void setIntegrantes(HashMap<String, DividaDespesaBeans> integrantes) {
         this.integrantes = integrantes;
     }
 

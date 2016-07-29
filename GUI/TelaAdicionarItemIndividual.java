@@ -5,7 +5,6 @@
  */
 package financasgenerica.GUI;
 
-import financasgenerica.Item;
 import financasgenerica.ItemDespesaIndividual;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -29,6 +28,7 @@ public class TelaAdicionarItemIndividual extends JDialog {
 
     private JLabel lblNome;
     private JLabel lblValor;
+    private JLabel lblInfo;
 
     private JTextField txtNome;
     private JTextField txtValor;
@@ -49,7 +49,8 @@ public class TelaAdicionarItemIndividual extends JDialog {
     private void construirTela() {
         lblNome = new JLabel("Nome");
         txtNome = new JTextField(15);
-
+        lblInfo = new JLabel();
+        lblInfo.setVisible(false);
         lblValor = new JLabel("Valor");
         txtValor = new JTextField(5);
 
@@ -58,7 +59,20 @@ public class TelaAdicionarItemIndividual extends JDialog {
         btnAdicionar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+                try {
+                    if (!txtNome.getText().isEmpty() && !txtValor.getText().isEmpty()) {
+                        Double.parseDouble(txtValor.getText());
+                        dispose();
+                    } else {
+                        lblInfo.setText("Entre com o nome e valor do item");
+                        lblInfo.setVisible(true);
+                        pack();
+                    }
+                } catch (NumberFormatException Ne) {
+                    lblInfo.setText("Número digitado inválido");
+                    lblInfo.setVisible(true);
+                    pack();
+                }
             }
         });
         btnCancelar = new JButton("Cancelar");
@@ -68,12 +82,13 @@ public class TelaAdicionarItemIndividual extends JDialog {
                 dispose();
             }
         });
-        adicionarComponente(lblNome, 0, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.LINE_END);
-        adicionarComponente(txtNome, 0, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
-        adicionarComponente(lblValor, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.LINE_END);
-        adicionarComponente(txtValor, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
-        adicionarComponente(btnAdicionar, 2, 0, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
-        adicionarComponente(btnCancelar, 2, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
+        adicionarComponente(lblInfo, 0, 0, 2, GridBagConstraints.CENTER, GridBagConstraints.CENTER);
+        adicionarComponente(lblNome, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.LINE_END);
+        adicionarComponente(txtNome, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
+        adicionarComponente(lblValor, 2, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.LINE_END);
+        adicionarComponente(txtValor, 2, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
+        adicionarComponente(btnAdicionar, 3, 0, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
+        adicionarComponente(btnCancelar, 3, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.LINE_START);
 
     }
 
@@ -88,14 +103,20 @@ public class TelaAdicionarItemIndividual extends JDialog {
         gbl.setConstraints(c, gbc);
         add(c);
     }
-    
-    public ItemDespesaIndividual getRetorno(){
-        return new ItemDespesaIndividual(txtNome.getText(), Double.parseDouble(txtValor.getText()));
+
+    public ItemDespesaIndividual getRetorno() {
+        if (!txtNome.getText().isEmpty() && !txtValor.getText().isEmpty()) {
+            return new ItemDespesaIndividual(txtNome.getText(), Double.parseDouble(txtValor.getText()));
+        }else{
+            return null;
+        }
     }
-    public String getNome(){
+
+    public String getNome() {
         return txtNome.getText();
     }
-    public String getValor(){
+
+    public String getValor() {
         return txtValor.getText();
     }
 }
